@@ -2,21 +2,28 @@ package com.codefactory.delivery.order.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Lob;
 import lombok.*;
 
 @ToString
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Address {
+public class DeliveryInfo {
     @Column(length=100)
     private String address;
-    @Column(length=100)
-    private String addressSub;
+
+    @Lob
+    private String memo;
+
+    private double latitude;
+
+    private double longitude;
 
     @Builder
-    public Address(String address, String addressSub) {
+    public DeliveryInfo(String address, String memo) {
         this.address = address;
-        this.addressSub = addressSub;
+        this.memo = memo;
     }
+
 }

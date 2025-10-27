@@ -32,7 +32,7 @@ public class Order {
     private Orderer orderer;
 
     @Embedded
-    private Address deliveryAddress;
+    private DeliveryInfo deliveryInfo;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name="P_ORDER_ITEM", joinColumns = @JoinColumn(name="order_id"))
@@ -53,9 +53,9 @@ public class Order {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public Order(Orderer orderer, List<OrderItem> orderItems, Address deliveryAddress, OrderStatus status) {
+    public Order(Orderer orderer, List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderStatus status) {
         this.orderer = orderer;
-        this.deliveryAddress = deliveryAddress;
+        this.deliveryInfo = deliveryInfo;
         this.status = status;
         setOrderItems(orderItems);
         calculateTotalOrderPrice();
