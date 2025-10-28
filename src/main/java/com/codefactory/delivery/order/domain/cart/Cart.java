@@ -3,7 +3,9 @@ package com.codefactory.delivery.order.domain.cart;
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @ToString
@@ -11,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(EntityListeners.class)
 public class Cart {
     @EmbeddedId
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +32,9 @@ public class Cart {
     private int quantity;
 
     private int totalPrice;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Builder
     public Cart(CartType type, UserId userId, CartItem item, int quantity) {
