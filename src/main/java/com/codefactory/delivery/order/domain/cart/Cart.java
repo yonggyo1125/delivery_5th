@@ -41,6 +41,8 @@ public class Cart {
 
     // 장바구니 상품이 없다면 담을 수 없음
     private void setCartItem(CartItem item) {
+        if (item == null) throw new CartItemNotFoundException();
+
         this.item = item;
     }
 
