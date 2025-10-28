@@ -42,6 +42,9 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @Convert(converter = PriceConverter.class)
+    @AttributeOverrides(
+            @AttributeOverride(name="value", column = @Column(name="total_order_price"))
+    )
     private Price totalOrderPrice;
 
     @Enumerated(EnumType.STRING)
