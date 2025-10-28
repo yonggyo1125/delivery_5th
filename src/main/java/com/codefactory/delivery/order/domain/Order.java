@@ -1,6 +1,8 @@
 package com.codefactory.delivery.order.domain;
 
+import com.codefactory.delivery.global.infrastructure.event.Events;
 import com.codefactory.delivery.global.infrastructure.security.AuditorAwareImpl;
+import com.codefactory.delivery.order.domain.event.OrderAcceptEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
 import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
 import jakarta.persistence.*;
@@ -79,6 +81,7 @@ public class Order {
         this.status = OrderStatus.ORDER_ACCEPT;
 
         // 결제 요청 이벤트 발생 시키기
+        Events.trigger(new OrderAcceptEvent(id));
     }
 
     // 주문 취소
