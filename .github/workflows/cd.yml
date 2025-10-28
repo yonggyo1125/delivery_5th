@@ -67,7 +67,7 @@ jobs:
 
             sudo docker run -d --name myapp -p 3000:3000 \
             -e DB_URL=${{ secrets.DB_URL }} \
-            -e DB_USERNAME=${{ secrets.DB_USERNAME}} \
+            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             -e DDB_DDL_AUTO=update \
             ${{ env.IMAGE_URI }}
