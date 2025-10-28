@@ -2,6 +2,7 @@ package com.codefactory.delivery.order.domain;
 
 import com.codefactory.delivery.global.infrastructure.event.Events;
 import com.codefactory.delivery.global.infrastructure.security.AuditorAwareImpl;
+import com.codefactory.delivery.menu.domain.ItemId;
 import com.codefactory.delivery.order.domain.event.OrderAcceptEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
 import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
@@ -15,6 +16,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Entity
@@ -80,8 +82,9 @@ public class Order {
     public void  orderAccept() {
         this.status = OrderStatus.ORDER_ACCEPT;
 
-        // 결제 요청 이벤트 발생 시키기
-        Events.trigger(new OrderAcceptEvent(id));
+        // 결제 요청 및 상품 구매 통계 처리 이벤트 발생 시키기
+        List<Map<ItemId, Integer>> counts = null;
+        Events.trigger(new OrderAcceptEvent(id, counts));
     }
 
     // 주문 취소

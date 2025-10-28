@@ -2,6 +2,7 @@ package com.codefactory.delivery.order.domain;
 
 import com.codefactory.delivery.menu.domain.ItemId;
 import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -14,6 +15,9 @@ import lombok.*;
 public class OrderItem {
     @Embedded
     private ItemId itemId;
+
+    @Column(length=60)
+    private String itemName; // 메뉴명
 
     @Convert(converter = PriceConverter.class)
     private Price price;

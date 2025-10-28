@@ -14,7 +14,7 @@ import java.util.UUID;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserId {
-    @Column(name="user_id")
+    @Column(length=45, name="user_id")
     private UUID id;
 
     public UserId(UUID id) {
