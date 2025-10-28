@@ -32,6 +32,9 @@ public class Cart {
 
     private int quantity;
 
+    @AttributeOverrides(
+            @AttributeOverride(name="value", column = @Column(name="total_price"))
+    )
     private Price totalPrice;
 
     @CreatedDate
