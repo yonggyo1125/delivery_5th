@@ -1,6 +1,7 @@
 package com.codefactory.delivery.order.domain.cart;
 
 import com.codefactory.delivery.menu.domain.ItemId;
+import com.codefactory.delivery.order.domain.Price;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -17,10 +18,10 @@ public class CartItem {
 
     @Column(length=60)
     private String itemName;
-    private int itemPrice;
+    private Price itemPrice;
 
     @Builder
-    public CartItem(ItemId id, String itemName,int itemPrice) {
+    public CartItem(ItemId id, String itemName,Price itemPrice) {
         this.id = id;
         this.itemName = itemName;
         this.itemPrice = itemPrice;

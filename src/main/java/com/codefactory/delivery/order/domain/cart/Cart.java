@@ -1,5 +1,6 @@
 package com.codefactory.delivery.order.domain.cart;
 
+import com.codefactory.delivery.order.domain.Price;
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Cart {
 
     private int quantity;
 
-    private int totalPrice;
+    private Price totalPrice;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -56,6 +57,6 @@ public class Cart {
     private void calculateTotalPrice() {
         if (item == null) return;
 
-        totalPrice = item.getItemPrice() * quantity;
+        totalPrice = new Price(item.getItemPrice().getValue() * quantity);
     }
 }
