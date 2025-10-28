@@ -4,8 +4,8 @@ server:
 spring:
   application:
     name: online-delivery
-  config:
-    import: optional:file:.env.dev[.properties]
+  #config:
+  #  import: optional:file:.env.dev[.properties]
 
   datasource:
     driver-class-name: org.postgresql.Driver
