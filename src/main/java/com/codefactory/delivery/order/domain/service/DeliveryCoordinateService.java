@@ -1,5 +1,6 @@
 package com.codefactory.delivery.order.domain.service;
 
+import com.codefactory.delivery.global.service.AddressToCoordinateService;
 import com.codefactory.delivery.order.domain.Order;
 import com.codefactory.delivery.order.domain.OrderId;
 import com.codefactory.delivery.order.domain.OrderRepository;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeliveryCoordinateService {
 
-    private final DeliveryCoordinate deliveryCoordinate;
+    private final AddressToCoordinateService service;
     private final OrderRepository repository;
 
     @Transactional
@@ -23,7 +24,7 @@ public class DeliveryCoordinateService {
         Order order = repository.findById(orderId).orElseThrow(OrderNotFoundException::new);
 
         // 주소를 위도 경도 좌표로 변환
-        List<Double> coords = deliveryCoordinate.getCoordinate(address);
+        List<Double> coords = service.getCoordinate(address);
 
         order.getDeliveryInfo().updateCoordinates(coords);
     }

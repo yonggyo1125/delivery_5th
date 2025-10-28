@@ -1,6 +1,7 @@
 package com.codefactory.delivery.order.domain.cart;
 
 import com.codefactory.delivery.order.domain.Price;
+import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,9 +33,7 @@ public class Cart {
 
     private int quantity;
 
-    @AttributeOverrides(
-            @AttributeOverride(name="value", column = @Column(name="total_price"))
-    )
+    @Convert(converter = PriceConverter.class)
     private Price totalPrice;
 
     @CreatedDate

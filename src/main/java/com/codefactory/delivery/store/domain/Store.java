@@ -16,5 +16,9 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.UUID)
     private StoreId id;
 
+    @Embedded
+    private Owner owner;
+
+
 
 }

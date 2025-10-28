@@ -42,9 +42,6 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @Convert(converter = PriceConverter.class)
-    @AttributeOverrides(
-            @AttributeOverride(name="value", column = @Column(name="total_order_price"))
-    )
     private Price totalOrderPrice;
 
     @Enumerated(EnumType.STRING)
@@ -52,10 +49,14 @@ public class Order {
     private OrderStatus status;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime modifiedAt;
+
+    private LocalDateTime deletedAt;
 
     @Builder
     public Order(Orderer orderer, List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderStatus status) {

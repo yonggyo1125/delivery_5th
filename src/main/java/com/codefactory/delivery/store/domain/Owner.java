@@ -12,11 +12,13 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Embeddable
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Owner implements Serializable  {
     @AttributeOverrides(
             @AttributeOverride(name="id", column = @Column(name="owner_id"))
     )
     public UserId id;
+
+    @Column(name="owner_name")
+    public String name;
 }

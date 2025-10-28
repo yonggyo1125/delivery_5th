@@ -2,6 +2,7 @@ package com.codefactory.delivery.order.domain.cart;
 
 import com.codefactory.delivery.menu.domain.ItemId;
 import com.codefactory.delivery.order.domain.Price;
+import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,9 +18,7 @@ public class CartItem {
     @Column(length=60)
     private String itemName;
 
-    @AttributeOverrides(
-            @AttributeOverride(name="value", column = @Column(name="item_price"))
-    )
+    @Convert(converter = PriceConverter.class)
     private Price itemPrice;
 
     @Builder
