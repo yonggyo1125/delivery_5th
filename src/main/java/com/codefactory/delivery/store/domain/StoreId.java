@@ -1,4 +1,4 @@
-package com.codefactory.delivery.order.domain;
+package com.codefactory.delivery.store.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -11,16 +11,15 @@ import java.util.UUID;
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderId {
-    @Column(length=45, name="order_id")
-    private UUID id;
+public class StoreId {
+    @Column(length=45, name="store_id")
+    public UUID id;
 
-    public OrderId(UUID id) {
+    public StoreId(UUID id) {
         this.id = id;
     }
 
-    public static OrderId of(UUID id) {
-        return new OrderId(id);
+    public static StoreId of(UUID id) {
+        return new StoreId(id);
     }
-
 }

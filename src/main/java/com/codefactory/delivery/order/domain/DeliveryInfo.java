@@ -12,10 +12,11 @@ import java.util.List;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DeliveryInfo {
-    @Column(length=100)
+    @Column(name="delivery_address", length=100)
     private String address;
 
     @Lob
+    @Column(name="delivery_memo")
     private String memo;
 
     private double latitude;
