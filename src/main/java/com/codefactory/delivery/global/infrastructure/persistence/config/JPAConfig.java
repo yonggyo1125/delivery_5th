@@ -1,4 +1,4 @@
-package com.codefactory.delivery.global.infrastructure.persistence;
+package com.codefactory.delivery.global.infrastructure.persistence.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

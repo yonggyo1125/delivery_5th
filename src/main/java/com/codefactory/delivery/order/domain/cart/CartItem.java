@@ -1,8 +1,8 @@
 package com.codefactory.delivery.order.domain.cart;
 
 import com.codefactory.delivery.menu.domain.ItemId;
-import com.codefactory.delivery.order.domain.Price;
-import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
+import com.codefactory.delivery.global.infrastructure.persistence.Price;
+import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
 import jakarta.persistence.*;
 import lombok.*;
 

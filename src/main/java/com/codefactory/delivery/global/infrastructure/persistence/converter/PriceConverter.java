@@ -1,6 +1,6 @@
-package com.codefactory.delivery.order.infrastructure.persistence.converter;
+package com.codefactory.delivery.global.infrastructure.persistence.converter;
 
-import com.codefactory.delivery.order.domain.Price;
+import com.codefactory.delivery.global.infrastructure.persistence.Price;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.Objects;

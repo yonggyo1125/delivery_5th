@@ -1,28 +1,25 @@
 package com.codefactory.delivery.order.domain;
 
 import com.codefactory.delivery.global.infrastructure.event.Events;
-import com.codefactory.delivery.global.infrastructure.security.AuditorAwareImpl;
+import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
+import com.codefactory.delivery.global.infrastructure.persistence.Price;
+import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
 import com.codefactory.delivery.order.domain.event.OrderAcceptEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
-import com.codefactory.delivery.order.infrastructure.persistence.converter.PriceConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Entity
 @Table(name="P_ORDER")
 @Access(AccessType.FIELD)
-@EntityListeners(AuditorAwareImpl.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseUserEntity {
     @EmbeddedId
     @GeneratedValue(strategy = GenerationType.UUID)
     private OrderId id;
@@ -47,16 +44,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(length=45)
     private OrderStatus status;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime modifiedAt;
-
-    private LocalDateTime deletedAt;
 
     @Builder
     public Order(Orderer orderer, List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderStatus status) {

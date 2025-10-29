@@ -1,4 +1,4 @@
-package com.codefactory.delivery.order.domain;
+package com.codefactory.delivery.global.infrastructure.persistence;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
