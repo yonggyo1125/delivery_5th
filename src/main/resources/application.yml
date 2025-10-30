@@ -49,12 +49,11 @@ management:
       exposure:
         include: health,info,refresh
 
+# 로그 설정
 logging:
   level:
-    org:
-      hibernate:
-        type: trace
-        binder: trace
+    org.hibernate.type: trace
+    org.hibernate.orm.jdbc.bind: trace
 
 keycloak:
   server-url: https://keycloak.code-factory.co.kr
