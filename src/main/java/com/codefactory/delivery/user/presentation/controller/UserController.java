@@ -10,9 +10,18 @@ import com.codefactory.delivery.user.application.service.UserUpdateService;
 import com.codefactory.delivery.user.presentation.dto.*;
 import com.codefactory.delivery.user.presentation.validator.UserRegisterValidator;
 import com.codefactory.delivery.user.presentation.validator.UserUpdateValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +33,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/user/")
+@Tag(name="회원 API", description = "회원의 인증/인가, 가입, 수정 기능 제공")
 public class UserController {
 
     private final TokenGenerateService tokenService;
@@ -31,6 +41,7 @@ public class UserController {
     private final UserUpdateService updateService;
 
     // 토큰 발급
+    @Operation(summary = "인증 토근 발급", description = "username, password 인증을 통해서 승인된 회원이 접근할 수 있는 토큰을 발급해 줍니다.")
     @PostMapping("token")
     public TokenResponse generateToken(@Valid @RequestBody TokenRequest req) {
         TokenInfo tokenInfo = tokenService.generate(req.username(), req.password());
@@ -44,6 +55,7 @@ public class UserController {
 
     // 로그인한 사용자 정보 조회
     @GetMapping("profile")
+    @Parameter(name="Authorization", description = "인증 방식 및 토큰을 위한 헤더", example = "Bearer 인증토큰", in = ParameterIn.HEADER, schema = @Schema(format = "string"))
     public UserResponse getProfile(@AuthenticationPrincipal Jwt jwt) {
         UUID userId = UUID.fromString(jwt.getSubject());
         Map<String, Object> claims = jwt.getClaims();
@@ -101,11 +113,29 @@ public class UserController {
 
     // 새 Role 부여
     @PatchMapping("role")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Parameter(name="Authorization", description = "인증 방식 및 토큰을 위한 헤더", example = "Bearer 인증토큰", in = ParameterIn.HEADER, schema = @Schema(format = "string"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Role 변경 성공"),
+            @ApiResponse(responseCode = "401", description = "관리자가 아닌 경우")
+        })
     public void changeRole(@AuthenticationPrincipal Jwt jwt, @RequestBody List<String> roles) {
         if (roles == null || roles.isEmpty()) {
             throw new BadRequestException("변경할 ROLE을 전송해 주세요.");
         }
 
         updateService.updateUserRole(UUID.fromString(jwt.getSubject()), roles);
+    }
+
+    @GetMapping("profile/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "[관리자 기능] 회원 ID로 회원 정보 조회")
+    @Parameters({
+            @Parameter(name="Authorization", description = "인증 방식 및 토큰을 위한 헤더", example = "Bearer 인증토큰", in = ParameterIn.HEADER, schema = @Schema(format = "string")),
+            @Parameter(name = "userId", in = ParameterIn.PATH, description = "회원 UID")
+    })
+    public UserResponse userProfile(@PathVariable("userId") String userId) {
+
+        return null;
     }
 }
