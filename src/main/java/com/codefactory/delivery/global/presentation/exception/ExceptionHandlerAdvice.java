@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,8 @@ public class ExceptionHandlerAdvice {
             status = HttpStatus.BAD_REQUEST;
             message = messageUtils.getMessage("MISSING.BODY");
 
+        } else if (e instanceof AuthorizationDeniedException) {
+            status = HttpStatus.UNAUTHORIZED;
         }
 
         log.error("HTTP ERROR", e);
