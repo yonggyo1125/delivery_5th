@@ -18,4 +18,12 @@ public class CartId {
     public CartId(UUID id) {
         this.id = id;
     }
+
+    public static CartId of() {
+        return CartId.of(UUID.randomUUID());
+    }
+
+    public static CartId of(UUID id) {
+        return new CartId(id);
+    }
 }

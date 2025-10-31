@@ -19,6 +19,10 @@ public class OrderId {
         this.id = id;
     }
 
+    public static OrderId of() {
+        return OrderId.of(UUID.randomUUID());
+    }
+
     public static OrderId of(UUID id) {
         return new OrderId(id);
     }
