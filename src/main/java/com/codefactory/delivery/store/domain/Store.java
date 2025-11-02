@@ -13,7 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store {
     @EmbeddedId
-    @GeneratedValue(strategy = GenerationType.UUID)
     private StoreId id;
 
     @Embedded

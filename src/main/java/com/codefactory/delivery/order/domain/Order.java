@@ -21,7 +21,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseUserEntity {
     @EmbeddedId
-    @GeneratedValue(strategy = GenerationType.UUID)
     private OrderId id;
 
     @Version

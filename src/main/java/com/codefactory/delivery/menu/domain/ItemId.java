@@ -19,6 +19,10 @@ public class ItemId {
         this.id = id;
     }
 
+    public static ItemId of() {
+        return ItemId.of(UUID.randomUUID());
+    }
+
     public static ItemId of(UUID id) {
         return new ItemId(id);
     }

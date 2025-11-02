@@ -1,0 +1,16 @@
+package com.codefactory.delivery.menu.infrastructure.converter;
+
+import com.codefactory.delivery.menu.domain.Stock;
+import jakarta.persistence.AttributeConverter;
+
+public class StockConverter implements AttributeConverter<Stock, Integer> {
+    @Override
+    public Integer convertToDatabaseColumn(Stock attribute) {
+        return attribute.getValue();
+    }
+
+    @Override
+    public Stock convertToEntityAttribute(Integer value) {
+        return new Stock(value == null ? 0 : value);
+    }
+}
