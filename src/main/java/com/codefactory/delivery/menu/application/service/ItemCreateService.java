@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class ItemCreateService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ItemDto create(int storeId, ItemRequest req) {
+    public ItemDto create(UUID storeId, ItemRequest req) {
         return null;
     }
 }

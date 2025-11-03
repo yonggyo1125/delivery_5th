@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/store/{storeId}")
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class ItemController {
      */
     @PostMapping("/item")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemResponse createItem(@PathVariable("storeId") int storeId, @Valid @RequestBody ItemRequest req) {
+    public ItemResponse createItem(@PathVariable("storeId") UUID storeId, @Valid @RequestBody ItemRequest req) {
 
         ItemDto itemDto = createService.create(storeId, req);
 
