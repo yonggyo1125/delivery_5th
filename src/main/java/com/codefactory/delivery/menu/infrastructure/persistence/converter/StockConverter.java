@@ -1,4 +1,4 @@
-package com.codefactory.delivery.menu.infrastructure.converter;
+package com.codefactory.delivery.menu.infrastructure.persistence.converter;
 
 import com.codefactory.delivery.menu.domain.Stock;
 import jakarta.persistence.AttributeConverter;

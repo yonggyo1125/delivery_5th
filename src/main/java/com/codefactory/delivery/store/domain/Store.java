@@ -11,6 +11,7 @@ import lombok.ToString;
 @Getter
 @Entity
 @Access(AccessType.FIELD)
+@Table(name="P_STORE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store {
     @EmbeddedId

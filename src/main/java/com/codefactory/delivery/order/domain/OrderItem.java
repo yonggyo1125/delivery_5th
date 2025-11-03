@@ -18,7 +18,7 @@ public class OrderItem {
     private ItemId itemId;
 
     @Column(nullable = false, length=60)
-    private String itemName; // 메뉴명
+    private String itemName; // 주문상품명
 
     @Convert(converter = PriceConverter.class)
     private Price price;
