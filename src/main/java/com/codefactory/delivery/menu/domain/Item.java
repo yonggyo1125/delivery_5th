@@ -46,6 +46,7 @@ public class Item extends BaseUserEntity {
     @Column(name="stock")
     private Stock stock;
 
+    @Transient
     private boolean outOfStock; // 품절 상태 여부
 
     @Builder
