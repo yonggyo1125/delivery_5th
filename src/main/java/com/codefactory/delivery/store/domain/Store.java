@@ -1,5 +1,6 @@
 package com.codefactory.delivery.store.domain;
 
+import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,5 +20,10 @@ public class Store {
     private Owner owner;
 
 
+    public static void exists(StoreId id, StoreRepository repository) {
+        if (!repository.existsById(id)) {
+            throw new StoreNotFoundException();
+        }
+    }
 
 }

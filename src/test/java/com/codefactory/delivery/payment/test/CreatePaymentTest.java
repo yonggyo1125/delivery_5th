@@ -3,14 +3,13 @@ package com.codefactory.delivery.payment.test;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClient;
 
 import java.net.URI;
 import java.util.UUID;
 
 @SpringBootTest
-@ActiveProfiles("test")
+//@ActiveProfiles
 public class CreatePaymentTest {
     /**
      * 클라이언트 키: test_ck_QbgMGZzorzzw2vaXkbnNrl5E1em4

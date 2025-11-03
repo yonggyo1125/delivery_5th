@@ -3,11 +3,13 @@ package com.codefactory.delivery.menu.domain;
 import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
 import com.codefactory.delivery.global.infrastructure.persistence.Price;
 import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
+import com.codefactory.delivery.menu.domain.exception.ItemNotFoundException;
 import com.codefactory.delivery.menu.infrastructure.converter.StockConverter;
 import com.codefactory.delivery.store.domain.StoreId;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @ToString
 @Getter
 @Entity
+@Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseUserEntity {
     @EmbeddedId
@@ -35,10 +38,11 @@ public class Item extends BaseUserEntity {
     @Convert(converter = PriceConverter.class)
     private Price price;
 
-    @Column(nullable = false)
+    @Column(length=100, nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(length=30)
     private ItemStatus status;
 
     private boolean active; // 메뉴 노출 여부
@@ -116,5 +120,22 @@ public class Item extends BaseUserEntity {
         }
 
         return totalPrice;
+    }
+
+    // 상품 삭제 처리
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    // 상품 등록 여부 체크
+    public static void exists(ItemId id, ItemRepository repository) {
+        if (!repository.existsById(id)) {
+            throw new ItemNotFoundException();
+        }
+    }
+
+    // 상품 수정 가능 여부
+    public boolean isEditable(ItemId id) {
+        return false;
     }
 }
