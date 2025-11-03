@@ -1,6 +1,7 @@
 package com.codefactory.delivery.menu.presentation.controller;
 
 import com.codefactory.delivery.menu.application.service.ItemCreateService;
+import com.codefactory.delivery.menu.application.service.dto.ItemDto;
 import com.codefactory.delivery.menu.presentation.dto.ItemRequest;
 import com.codefactory.delivery.menu.presentation.dto.ItemResponse;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemResponse createItem(@PathVariable("storeId") int storeId, @Valid @RequestBody ItemRequest req) {
 
-        createService.create(storeId, req);
+        ItemDto itemDto = createService.create(storeId, req);
 
         return null;
     }
