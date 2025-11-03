@@ -5,10 +5,8 @@ import com.codefactory.delivery.menu.presentation.dto.ItemRequest;
 import com.codefactory.delivery.menu.presentation.dto.ItemResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/store/{storeId}")
@@ -22,9 +20,10 @@ public class ItemController {
      * @return
      */
     @PostMapping("/item")
-    public ItemResponse createItem(@Valid @RequestBody ItemRequest req) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ItemResponse createItem(@PathVariable("storeId") int storeId, @Valid @RequestBody ItemRequest req) {
 
-        createService.create(req);
+        createService.create(storeId, req);
 
         return null;
     }

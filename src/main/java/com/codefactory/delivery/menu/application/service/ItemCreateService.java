@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemCreateService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ItemDto create(ItemRequest req) {
+    public ItemDto create(int storeId, ItemRequest req) {
         return null;
     }
 }
