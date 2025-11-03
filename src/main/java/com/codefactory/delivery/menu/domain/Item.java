@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @ToString
@@ -97,7 +98,23 @@ public class Item extends BaseUserEntity {
         itemOptions.forEach(o -> itemOptions.remove(o));
     }
 
-    public Price getTotal() {
-        return null;
+    /**
+     * 상품 수량 + 옵션 번호, 수량으로 금액 계산
+     * @param itemCnt
+     * @param options
+     * @return
+     */
+    public Price getTotal(int itemCnt, Map<Integer, Integer> options) {
+        Price totalPrice = price.add(price.multiply(itemCnt));
+
+        if (itemOptions != null && options != null) {
+            options.forEach((optionIdx, optionCnt) -> {
+                ItemOption item = itemOptions.get(optionIdx);
+                if (item == null) return;
+                totalPrice.add(item.getAddPrice().multiply(optionCnt));
+            });
+        }
+
+        return totalPrice;
     }
 }
