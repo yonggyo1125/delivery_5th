@@ -2,8 +2,12 @@ package com.codefactory.delivery.store.domain;
 
 import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
 import com.codefactory.delivery.global.infrastructure.persistence.Price;
-import com.codefactory.delivery.menu.domain.*;
+import com.codefactory.delivery.menu.domain.Item;
+import com.codefactory.delivery.menu.domain.ItemOption;
+import com.codefactory.delivery.menu.domain.ItemStatus;
+import com.codefactory.delivery.menu.domain.Stock;
 import com.codefactory.delivery.store.domain.exception.CategoryNotFoundException;
+import com.codefactory.delivery.store.domain.exception.StaffNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
 import com.codefactory.delivery.store.infrastructure.persistence.converter.StaffConverter;
@@ -14,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 1. 메뉴 생성은 매장에서 생성
@@ -40,7 +45,7 @@ public class Store extends BaseUserEntity {
     private Owner owner;
 
     @Convert(converter = StaffConverter.class)
-    private List<Staff> staffs; // 직원들
+    private Set<Staff> staffs; // 직원들
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name="P_STORE_CATEGORY", joinColumns = @JoinColumn(name="store_id"))
@@ -135,7 +140,12 @@ public class Store extends BaseUserEntity {
      * @param staffs
      */
     public void addStaff(List<Staff> staffs, OwnerRoleCheck roleCheck) {
+        if (!roleCheck.check(staffs)) {
+            throw new StaffNotEditableException();
+        }
 
+        this.staffs = Objects.requireNonNullElseGet(this.staffs, ArrayList::new);
+        staffs.addAll(staffs);
     }
 
     public void addStaff(Staff staff, OwnerRoleCheck roleCheck) {
