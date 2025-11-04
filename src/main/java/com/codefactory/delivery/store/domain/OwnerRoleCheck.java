@@ -1,7 +1,7 @@
 package com.codefactory.delivery.store.domain;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface OwnerRoleCheck {
-    boolean check(List<Staff> staffs);
+    boolean check(Collection<Staff> staffs);
 }

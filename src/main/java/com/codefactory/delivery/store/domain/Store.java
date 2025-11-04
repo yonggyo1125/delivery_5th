@@ -15,10 +15,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1. 메뉴 생성은 매장에서 생성
@@ -139,12 +136,12 @@ public class Store extends BaseUserEntity {
      *  OWNER권한만 추가가능, 가능한 회원은 STAFF 권한이 있어야 한다.
      * @param staffs
      */
-    public void addStaff(List<Staff> staffs, OwnerRoleCheck roleCheck) {
+    public void addStaff(Collection<Staff> staffs, OwnerRoleCheck roleCheck) {
         if (!roleCheck.check(staffs)) {
             throw new StaffNotEditableException();
         }
 
-        this.staffs = Objects.requireNonNullElseGet(this.staffs, ArrayList::new);
+        this.staffs = Objects.requireNonNullElseGet(this.staffs, HashSet::new);
         staffs.addAll(staffs);
     }
 
@@ -157,8 +154,12 @@ public class Store extends BaseUserEntity {
      *
      * @param staffs
      */
-    public void removeStaff(List<Staff> staffs, OwnerRoleCheck roleCheck) {
+    public void removeStaff(Collection<Staff> staffs, OwnerRoleCheck roleCheck) {
+        if (!roleCheck.check(staffs)) {
+            throw new StaffNotEditableException();
+        }
 
+        staffs.removeAll(staffs);
     }
 
     public void removeStaff(Staff staff, OwnerRoleCheck roleCheck) {
