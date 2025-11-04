@@ -20,6 +20,14 @@ public class Store {
     @Embedded
     private Owner owner;
 
+    @Column(length=100, nullable = false)
+    private String storeName;
+
+    @Column(length=45, nullable = false)
+    private String storeTel;
+
+    @Embedded
+    private StoreAddress address;
 
     public static void exists(StoreId id, StoreRepository repository) {
         if (!repository.existsById(id)) {
