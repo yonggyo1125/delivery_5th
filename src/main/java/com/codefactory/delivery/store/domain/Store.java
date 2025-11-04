@@ -6,6 +6,7 @@ import com.codefactory.delivery.menu.domain.*;
 import com.codefactory.delivery.store.domain.exception.CategoryNotFoundException;
 import com.codefactory.delivery.store.domain.exception.StoreNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
+import com.codefactory.delivery.store.infrastructure.persistence.converter.StaffConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,8 @@ import java.util.Objects;
  * 4. 삭제, 수정 권한은 OWNER(같은 상점 주인만 삭제), MASTER, MANAGER 권한이 있는 경우
  * 5. 상점 분류의 추가, 삭제
  * 6. 상점을 통해서만 상품을 만든다.
+ * 7. 사장님외에도 직원이 매장을 관리 할수 있다.
+ *      - 사장이 직원을 추가, 제거
  */
 @ToString
 @Getter
@@ -35,6 +38,9 @@ public class Store extends BaseUserEntity {
 
     @Embedded
     private Owner owner;
+
+    @Convert(converter = StaffConverter.class)
+    private List<Staff> staffs; // 직원들
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name="P_STORE_CATEGORY", joinColumns = @JoinColumn(name="store_id"))
@@ -87,7 +93,7 @@ public class Store extends BaseUserEntity {
 
     public void addCategory(Category category, boolean active) {
         categories = Objects.requireNonNullElseGet(categories, ArrayList::new);
-        categories.add(new StoreCategory(id, category, active));
+        categories.add(new StoreCategory(category, active));
         categories = categories.stream().distinct().toList();
     }
 
@@ -122,6 +128,33 @@ public class Store extends BaseUserEntity {
                 .itemOptions(itemOptions)
                 .build();
     }
+
+    /**
+     * 직원 추가
+     *  OWNER권한만 추가가능, 가능한 회원은 STAFF 권한이 있어야 한다.
+     * @param staffs
+     */
+    public void addStaff(List<Staff> staffs, OwnerRoleCheck roleCheck) {
+
+    }
+
+    public void addStaff(Staff staff, OwnerRoleCheck roleCheck) {
+        addStaff(List.of(staff), roleCheck);
+    }
+
+    /**
+     * 직원 제거
+     *
+     * @param staffs
+     */
+    public void removeStaff(List<Staff> staffs, OwnerRoleCheck roleCheck) {
+
+    }
+
+    public void removeStaff(Staff staff, OwnerRoleCheck roleCheck) {
+        removeStaff(List.of(staff), roleCheck);
+    }
+
 
     public static void exists(StoreId id, StoreRepository repository) {
         if (!repository.existsById(id)) {

@@ -11,9 +11,6 @@ import java.util.Objects;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreCategory {
-    @Embedded
-    private StoreId storeId;
-
     @Enumerated(EnumType.STRING)
     @Column(length=30, nullable = false)
     private Category category;
