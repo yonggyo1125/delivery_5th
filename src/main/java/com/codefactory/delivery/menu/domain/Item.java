@@ -6,6 +6,7 @@ import com.codefactory.delivery.global.infrastructure.persistence.converter.Pric
 import com.codefactory.delivery.menu.domain.exception.ItemNotEditableException;
 import com.codefactory.delivery.menu.domain.exception.ItemNotFoundException;
 import com.codefactory.delivery.menu.infrastructure.persistence.converter.StockConverter;
+import com.codefactory.delivery.store.domain.Category;
 import com.codefactory.delivery.store.domain.StoreId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +31,10 @@ public class Item extends BaseUserEntity {
             @AttributeOverride(name="id", column = @Column(name="store_id", nullable = false))
     )
     private StoreId storeId; // 상점 ID
+
+    @Enumerated(EnumType.STRING)
+    @Column(length=30)
+    private Category category;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name="P_ITEM_OPTION", joinColumns = @JoinColumn(name="item_id"))
@@ -56,13 +61,14 @@ public class Item extends BaseUserEntity {
     private boolean outOfStock; // 품절 상태 여부
 
     @Builder
-    public Item(StoreId storeId, ItemId id, Price price, String name, ItemStatus status, Stock stock, List<ItemOption> itemOptions) {
+    public Item(StoreId storeId, ItemId id, Price price, String name, ItemStatus status, Stock stock, List<ItemOption> itemOptions, Category category) {
         this.storeId = storeId;
         this.id = Objects.requireNonNullElse(id, ItemId.of());
         this.price = price;
         this.name = name;
         this.itemOptions = itemOptions;
         this.status = Objects.requireNonNullElse(status, ItemStatus.UNLIMITED_STOCK); // 재고 기본 값은 무제한 재고
+        this.category = category;
         setStock(stock);
 
     }

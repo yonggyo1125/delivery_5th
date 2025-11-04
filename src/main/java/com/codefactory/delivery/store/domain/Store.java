@@ -1,6 +1,9 @@
 package com.codefactory.delivery.store.domain;
 
 import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
+import com.codefactory.delivery.global.infrastructure.persistence.Price;
+import com.codefactory.delivery.menu.domain.*;
+import com.codefactory.delivery.store.domain.exception.CategoryNotFoundException;
 import com.codefactory.delivery.store.domain.exception.StoreNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
 import jakarta.persistence.*;
@@ -18,6 +21,7 @@ import java.util.Objects;
  * 3. 매장의 삭제는 지난 주문 내역 및 메뉴를 유지하기 위해서 소프트 삭제만 허용
  * 4. 삭제, 수정 권한은 OWNER(같은 상점 주인만 삭제), MASTER, MANAGER 권한이 있는 경우
  * 5. 상점 분류의 추가, 삭제
+ * 6. 상점을 통해서만 상품을 만든다.
  */
 @ToString
 @Getter
@@ -96,6 +100,27 @@ public class Store extends BaseUserEntity {
         if (this.categories == null || categories.isEmpty()) return;
 
         this.categories = this.categories.stream().filter(c -> !categories.contains(c.getCategory())).toList();
+    }
+
+    public boolean categoryExists(Category category) {
+        return categories != null && categories.stream().anyMatch(c -> c.getCategory() == category);
+    }
+
+    // 상점 -> 상품 생성
+    public Item createItem(Category category, Price price, String name, ItemStatus status, Stock stock, List<ItemOption> itemOptions) {
+        // 카테고리가 실제로 등록되어 있는지 체크
+        if (category != null && !categoryExists(category)) {
+            throw new CategoryNotFoundException();
+        }
+
+        return Item.builder()
+                .storeId(id)
+                .price(price)
+                .name(name)
+                .status(status)
+                .stock(stock)
+                .itemOptions(itemOptions)
+                .build();
     }
 
     public static void exists(StoreId id, StoreRepository repository) {
