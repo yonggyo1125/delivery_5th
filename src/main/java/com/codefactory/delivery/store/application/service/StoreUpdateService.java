@@ -21,6 +21,7 @@ public class StoreUpdateService {
     private final StoreRepository repository;
     private final StoreAddressService addressService;
 
+    // 상점 일반 정보 수정
     public void updateInfo(UUID id, String storeName, String storeTel) {
         Store store = validateAndGet(id);
 
@@ -29,11 +30,13 @@ public class StoreUpdateService {
         repository.save(store);
     }
 
+    // 상점 운영 정보 수정
     public void updateOperatingInfo(UUID id, LocalTime startTime, LocalTime endTime, List<DayOfWeek> weekdays) {
         Store store = validateAndGet(id);
         store.changeOperatingInfo(startTime, endTime, weekdays);
     }
 
+    // 상점 주소 정보 수정
     public void updateAddress(UUID id, String address) {
         Store store = validateAndGet(id);
         store.changeAddress(address, addressService);

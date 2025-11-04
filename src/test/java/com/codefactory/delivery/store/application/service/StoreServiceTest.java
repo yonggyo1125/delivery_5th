@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import static java.time.DayOfWeek.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -28,6 +29,9 @@ public class StoreServiceTest {
     StoreCreateService createService;
 
     @Autowired
+    StoreUpdateService updateService;
+
+    @Autowired
     StoreRepository repository;
 
     StoreRequest request;
@@ -36,7 +40,7 @@ public class StoreServiceTest {
     void init() {
         request = StoreRequest.builder()
                 .storeName("테스트 매장")
-                .storeAddress("테스트 주소")
+                .storeAddress("인천광역시 계양구 임학안로 28번길 10")
                 .storeTel("02-100-1000")
                 .startHour(LocalTime.of(10, 0))
                 .endHour(LocalTime.of(19, 0))
@@ -57,5 +61,23 @@ public class StoreServiceTest {
             Store store = repository.findById(storeId).orElseThrow();
             System.out.println(store);
         });
+    }
+
+    @Test
+    @DisplayName("상품 정보 수정 테스트")
+    @MockUser(roles = "OWNER")
+    void updateStoreInfoTest() {
+        StoreId storeId = createService.create(request);
+        UUID id = storeId.getId();
+
+        // 일반 정보 변경
+        updateService.updateInfo(id, "(수정)" + request.storeName(), "(수정)" + request.storeTel());
+
+        // 주소 정보 변경
+        updateService.updateAddress(id, "서울특별시 강남구 테헤란로44길 8");
+
+        // 운영 정보 변경
+        updateService.updateOperatingInfo(id, LocalTime.of(12, 0), LocalTime.of(23,0), List.of(MONDAY, TUESDAY));
+
     }
 }

@@ -1,6 +1,7 @@
 package com.codefactory.delivery.store.application.service;
 
 import com.codefactory.delivery.store.domain.*;
+import com.codefactory.delivery.store.domain.service.StoreAddressService;
 import com.codefactory.delivery.store.presentation.dto.StoreRequest;
 import com.codefactory.delivery.user.domain.UserId;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class StoreCreateService {
 
     private final StoreRepository repository;
+    private final StoreAddressService addressService;
 
     @PreAuthorize("hasAnyRole('OWNER', 'MANAGER', 'MASTER')")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -41,6 +43,7 @@ public class StoreCreateService {
                 .storeName(req.storeName())
                 .storeTel(req.storeTel())
                 .address(req.storeAddress())
+                .addressService(addressService)
                 .categories(req.category() == null ? null : req.category().stream().map(c -> new StoreCategory(c.category(), c.active())).toList())
                 .startHour(startHour)
                 .endHour(endHour)

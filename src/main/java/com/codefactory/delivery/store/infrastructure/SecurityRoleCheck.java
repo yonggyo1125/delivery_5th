@@ -17,7 +17,7 @@ public class SecurityRoleCheck implements RoleCheck {
 
         String role = SecurityRoleCheckHelper.getRole(store);
 
-        return !StringUtils.hasText(role); // 문자열이 없는 경우는 ADMIN, OWNER, STAFF 모두 아닌 경우
+        return StringUtils.hasText(role); // 문자열이 있다면 ADMIN, OWNER, STAFF 중 하나,
     }
 
 }

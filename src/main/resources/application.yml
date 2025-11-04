@@ -78,3 +78,7 @@ springdoc:
     doc-expansion: full
   paths-to-match:
     - /v1/**
+
+# 카카오 API
+kakao:
+  restapi.key: ${KAKAO_REST_API_KEY}

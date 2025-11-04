@@ -15,6 +15,7 @@ import com.codefactory.delivery.store.infrastructure.persistence.converter.Staff
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -66,14 +67,16 @@ public class Store extends BaseUserEntity {
     private OperatingInfo operatingInfo;
 
     @Builder
-    public Store(StoreId id, String storeName, String storeTel, String address, LocalTime startHour, LocalTime endHour, List<DayOfWeek> weekdays, List<StoreCategory> categories, UserId userId, String userName) {
+    public Store(StoreId id, String storeName, String storeTel, String address, LocalTime startHour, LocalTime endHour, List<DayOfWeek> weekdays, List<StoreCategory> categories, UserId userId, String userName, StoreAddressService addressService) {
         this.id = Objects.requireNonNullElse(id, StoreId.of());
         this.storeName = storeName;
         this.storeTel = storeTel;
-        this.address = StoreAddress.of(address);
         this.operatingInfo = new OperatingInfo(startHour, endHour, weekdays);
         this.owner = new Owner(userId, userName);
         setCategories(categories);
+
+        // 주소 -> 좌표 변환
+        changeAddress(address, addressService);
 
     }
 
@@ -194,6 +197,7 @@ public class Store extends BaseUserEntity {
      * @param address
      */
     public void changeAddress(String address, StoreAddressService service) {
+        if (!StringUtils.hasText(address) || service == null) return;
         List<Double> coords = service.getCoordinate(address);
         this.address = new StoreAddress(address, coords.get(0), coords.get(1));
     }
