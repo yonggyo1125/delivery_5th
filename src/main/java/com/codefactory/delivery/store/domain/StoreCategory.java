@@ -1,16 +1,14 @@
 package com.codefactory.delivery.store.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Objects;
 
 @ToString
 @Getter
 @Embeddable
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreCategory {
     @Embedded
