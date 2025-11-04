@@ -3,7 +3,6 @@ package com.codefactory.delivery.menu.domain;
 import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
 import com.codefactory.delivery.global.infrastructure.persistence.Price;
 import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
-import com.codefactory.delivery.menu.domain.exception.ItemNotEditableException;
 import com.codefactory.delivery.menu.domain.exception.ItemNotFoundException;
 import com.codefactory.delivery.menu.infrastructure.persistence.converter.StockConverter;
 import com.codefactory.delivery.store.domain.Category;
@@ -138,13 +137,6 @@ public class Item extends BaseUserEntity {
     public static void exists(ItemId id, ItemRepository repository) {
         if (!repository.existsById(id)) {
             throw new ItemNotFoundException();
-        }
-    }
-
-    // 상품 수정 가능 여부
-    public void isEditable(RoleCheck roleCheck) {
-        if (!roleCheck.check(id)) {
-            throw new ItemNotEditableException();
         }
     }
 }

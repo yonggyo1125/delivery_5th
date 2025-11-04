@@ -1,4 +1,4 @@
-package com.codefactory.delivery.menu.presentation.dto;
+package com.codefactory.delivery.store.presentation.dto;
 
 import com.codefactory.delivery.menu.domain.ItemStatus;
 import jakarta.validation.constraints.NotBlank;

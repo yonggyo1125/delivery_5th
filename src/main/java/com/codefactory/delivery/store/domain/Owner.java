@@ -12,6 +12,7 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Embeddable
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Owner implements Serializable  {
     @AttributeOverrides(

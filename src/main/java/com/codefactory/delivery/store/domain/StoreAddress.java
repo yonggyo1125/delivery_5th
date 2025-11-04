@@ -18,9 +18,15 @@ public class StoreAddress {
     private double lon;
 
     @Builder
-    public StoreAddress(String address, double lat, double lon) {
+    protected StoreAddress(String address, double lat, double lon) {
         this.address = address;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    protected static StoreAddress of(String address) {
+        return StoreAddress.builder()
+                .address(address)
+                .build();
     }
 }

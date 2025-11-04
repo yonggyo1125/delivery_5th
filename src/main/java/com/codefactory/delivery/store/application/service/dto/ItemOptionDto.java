@@ -1,4 +1,4 @@
-package com.codefactory.delivery.menu.application.service.dto;
+package com.codefactory.delivery.store.application.service.dto;
 
 public record ItemOptionDto(
         String optionName,

@@ -8,7 +8,7 @@ import java.util.Objects;
 @ToString
 @Getter
 @Embeddable
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreCategory {
     @Enumerated(EnumType.STRING)

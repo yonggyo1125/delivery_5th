@@ -11,10 +11,13 @@ import com.codefactory.delivery.store.domain.exception.StaffNotEditableException
 import com.codefactory.delivery.store.domain.exception.StoreNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
 import com.codefactory.delivery.store.infrastructure.persistence.converter.StaffConverter;
+import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -62,12 +65,13 @@ public class Store extends BaseUserEntity {
     private OperatingInfo operatingInfo;
 
     @Builder
-    public Store(StoreId id, String storeName, String storeTel, StoreAddress address, OperatingInfo operatingInfo, List<StoreCategory> categories) {
+    public Store(StoreId id, String storeName, String storeTel, String address, LocalTime startHour, LocalTime endHour, List<DayOfWeek> weekdays, List<StoreCategory> categories, UserId userId, String userName) {
         this.id = Objects.requireNonNullElse(id, StoreId.of());
         this.storeName = storeName;
         this.storeTel = storeTel;
-        this.address = address;
-        this.operatingInfo = operatingInfo;
+        this.address = StoreAddress.of(address);
+        this.operatingInfo = new OperatingInfo(startHour, endHour, weekdays);
+        this.owner = new Owner(userId, userName);
         setCategories(categories);
 
     }
@@ -87,7 +91,7 @@ public class Store extends BaseUserEntity {
      *  삭제, 수정 권한
      */
     public void isEditable(RoleCheck roleCheck) {
-        if (!roleCheck.check(id)) {
+        if (!roleCheck.check(this)) {
             // 권한이 없는 경우
             throw new StoreNotEditableException();
         }
@@ -137,7 +141,7 @@ public class Store extends BaseUserEntity {
      * @param staffs
      */
     public void addStaff(Collection<Staff> staffs, OwnerRoleCheck roleCheck) {
-        if (!roleCheck.check(staffs)) {
+        if (!roleCheck.check(this, staffs)) {
             throw new StaffNotEditableException();
         }
 
@@ -155,7 +159,7 @@ public class Store extends BaseUserEntity {
      * @param staffs
      */
     public void removeStaff(Collection<Staff> staffs, OwnerRoleCheck roleCheck) {
-        if (!roleCheck.check(staffs)) {
+        if (!roleCheck.check(this, staffs)) {
             throw new StaffNotEditableException();
         }
 
