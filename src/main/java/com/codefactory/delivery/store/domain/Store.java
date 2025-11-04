@@ -1,5 +1,6 @@
 package com.codefactory.delivery.store.domain;
 
+import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +12,8 @@ import java.util.Objects;
  * 1. 메뉴 생성은 매장에서 생성
  *     - OWNER, MASTER, MANAGER 권한이 있는 경우
  * 2. 메뉴 분류는 필수는 아님, 중복 분류는 안된다.
+ * 3. 매장의 삭제는 지난 주문 내역 및 메뉴를 유지하기 위해서 소프트 삭제만 허용
+ * 4. 삭제, 수정 권한은 OWNER(같은 상점 주인만 삭제), MASTER, MANAGER 권한이 있는 경우
  */
 @ToString
 @Getter
@@ -18,7 +21,7 @@ import java.util.Objects;
 @Access(AccessType.FIELD)
 @Table(name="P_STORE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store {
+public class Store extends BaseUserEntity {
     @EmbeddedId
     private StoreId id;
 
@@ -56,7 +59,12 @@ public class Store {
     private void setCategories(List<StoreCategory> categories) {
         if (categories == null || categories.isEmpty()) return;
 
-        this.categories = categories.stream();
+        this.categories = categories.stream().distinct().toList();
+    }
+
+
+    public void delete() {
+
     }
 
     public static void exists(StoreId id, StoreRepository repository) {
