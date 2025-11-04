@@ -5,7 +5,7 @@ import com.codefactory.delivery.store.domain.Store;
 import com.codefactory.delivery.store.domain.StoreId;
 import com.codefactory.delivery.store.domain.StoreRepository;
 import com.codefactory.delivery.store.presentation.dto.CategoryDto;
-import com.codefactory.delivery.store.presentation.dto.CreateRequest;
+import com.codefactory.delivery.store.presentation.dto.StoreRequest;
 import com.codefactory.delivery.user.test.MockUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,11 +30,11 @@ public class StoreServiceTest {
     @Autowired
     StoreRepository repository;
 
-    CreateRequest request;
+    StoreRequest request;
 
     @BeforeEach
     void init() {
-        request = CreateRequest.builder()
+        request = StoreRequest.builder()
                 .storeName("테스트 매장")
                 .storeAddress("테스트 주소")
                 .storeTel("02-100-1000")

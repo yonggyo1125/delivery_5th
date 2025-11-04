@@ -10,6 +10,7 @@ import com.codefactory.delivery.store.domain.exception.CategoryNotFoundException
 import com.codefactory.delivery.store.domain.exception.StaffNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotEditableException;
 import com.codefactory.delivery.store.domain.exception.StoreNotFoundException;
+import com.codefactory.delivery.store.domain.service.StoreAddressService;
 import com.codefactory.delivery.store.infrastructure.persistence.converter.StaffConverter;
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
@@ -177,4 +178,41 @@ public class Store extends BaseUserEntity {
         }
     }
 
+    /**
+     * 매장 일반 정보 수정
+     *
+     * @param storeName
+     * @param storeTel
+     */
+    public void changeInfo(String storeName, String storeTel) {
+        this.storeName = storeName;
+        this.storeTel = storeTel;
+    }
+
+    /**
+     * 매장 주소 변경, 위도 경도 정보도 함께 업데이트
+     * @param address
+     */
+    public void changeAddress(String address, StoreAddressService service) {
+        List<Double> coords = service.getCoordinate(address);
+        this.address = new StoreAddress(address, coords.get(0), coords.get(1));
+    }
+
+    /**
+     * 매장 운영시간, 운영 요일
+     *
+     * @param startHour
+     * @param endHour
+     * @param weekdays
+     */
+    public void changeOperatingInfo(LocalTime startHour, LocalTime endHour, List<DayOfWeek> weekdays) {
+        // 등록이 가능한지 여부 체크
+        if (startHour != null && endHour != null && endHour.isBefore(startHour)) {
+            LocalTime tmp = endHour;
+            endHour = startHour;
+            startHour = tmp;
+        }
+
+        this.operatingInfo = new OperatingInfo(startHour, endHour, weekdays);
+    }
 }

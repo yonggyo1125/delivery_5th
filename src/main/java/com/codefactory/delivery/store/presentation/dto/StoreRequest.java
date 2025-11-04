@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Builder
-public record CreateRequest(
+public record StoreRequest(
         @NotBlank String storeName,
         @NotBlank String storeAddress,
         @NotBlank String storeTel,

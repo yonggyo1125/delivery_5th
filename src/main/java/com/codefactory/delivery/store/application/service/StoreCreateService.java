@@ -1,7 +1,7 @@
 package com.codefactory.delivery.store.application.service;
 
 import com.codefactory.delivery.store.domain.*;
-import com.codefactory.delivery.store.presentation.dto.CreateRequest;
+import com.codefactory.delivery.store.presentation.dto.StoreRequest;
 import com.codefactory.delivery.user.domain.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +22,7 @@ public class StoreCreateService {
 
     @PreAuthorize("hasAnyRole('OWNER', 'MANAGER', 'MASTER')")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public StoreId create(CreateRequest req) {
+    public StoreId create(StoreRequest req) {
         // 회원정보
         Jwt jwt = (Jwt)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UUID userId= UUID.fromString(jwt.getSubject());
