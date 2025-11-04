@@ -29,6 +29,9 @@ public class Store {
     @Embedded
     private StoreAddress address;
 
+    @Embedded
+    private OperatingInfo operatingInfo;
+
     public static void exists(StoreId id, StoreRepository repository) {
         if (!repository.existsById(id)) {
             throw new StoreNotFoundException();
