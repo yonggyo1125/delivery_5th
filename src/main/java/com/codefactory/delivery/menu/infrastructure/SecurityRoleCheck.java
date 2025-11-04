@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,10 +37,11 @@ public class SecurityRoleCheck implements RoleCheck {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
-
+            boolean isAdmin = auth.getAuthorities().stream().anyMatch(s -> List.of("ROLE_MANAGER", "ROLE_MASTER").contains(s.getAuthority()));
 
             UUID userId  = UUID.fromString(jwt.getSubject());
 
+            return isAdmin || userId.equals(store.getOwner().id.getId());
         }
         return false;
     }
