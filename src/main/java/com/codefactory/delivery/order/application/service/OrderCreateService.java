@@ -7,10 +7,8 @@ import com.codefactory.delivery.menu.infrastructure.persistence.ItemDetailsDao;
 import com.codefactory.delivery.order.application.service.dto.OrderInfoDto;
 import com.codefactory.delivery.order.application.service.dto.OrderItemDto;
 import com.codefactory.delivery.order.application.service.dto.OrderItemOptionDto;
-import com.codefactory.delivery.order.domain.Order;
-import com.codefactory.delivery.order.domain.OrderId;
-import com.codefactory.delivery.order.domain.OrderItem;
-import com.codefactory.delivery.order.domain.OrderItemOption;
+import com.codefactory.delivery.order.domain.*;
+import com.codefactory.delivery.user.domain.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,15 +24,22 @@ import java.util.stream.Collectors;
 public class OrderCreateService {
 
     private final ItemDetailsDao itemDetailsDao;
+    private final OrderRepository orderRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public OrderId create(OrderInfoDto orderInfo, List<OrderItemDto> items) {
 
         List<OrderItem> orderItems = toOrderItem(items);
         Order order = Order.builder()
+                .ordererId(UserId.of(orderInfo.ordererId()))
+                .ordererName(orderInfo.ordererName())
+                .ordererEmail(orderInfo.ordererEmail())
                 .orderItems(orderItems)
                 .build();
-        return null;
+
+        orderRepository.save(order);
+
+        return order.getId();
     }
 
     private List<OrderItem> toOrderItem(List<OrderItemDto> items) {

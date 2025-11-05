@@ -3,7 +3,7 @@ package com.codefactory.delivery.order.application.service.dto;
 import java.util.UUID;
 
 public record OrderInfoDto(
-        UUID orderId,
+        UUID ordererId,
         String ordererName,
         String ordererEmail
 ) {}

@@ -7,6 +7,7 @@ import com.codefactory.delivery.global.infrastructure.persistence.converter.Pric
 import com.codefactory.delivery.order.domain.event.OrderAcceptEvent;
 import com.codefactory.delivery.order.domain.event.OrderRefundEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
+import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -54,8 +55,8 @@ public class Order extends BaseUserEntity {
     private OrderStatus status;
 
     @Builder
-    public Order(Orderer orderer, List<OrderItem> orderItems, String deliveryAddress, String deliveryMemo, OrderStatus status) {
-        this.orderer = orderer;
+    public Order(UserId ordererId, String ordererName, String ordererEmail, List<OrderItem> orderItems, String deliveryAddress, String deliveryMemo, OrderStatus status) {
+        this.orderer = new Orderer(ordererId, ordererName, ordererEmail);
         this.deliveryInfo = new DeliveryInfo(deliveryAddress, deliveryMemo);
         this.status = status;
         setOrderItems(orderItems);
