@@ -7,6 +7,7 @@ import com.codefactory.delivery.menu.infrastructure.persistence.ItemDetailsDao;
 import com.codefactory.delivery.order.application.service.dto.OrderInfoDto;
 import com.codefactory.delivery.order.application.service.dto.OrderItemDto;
 import com.codefactory.delivery.order.application.service.dto.OrderItemOptionDto;
+import com.codefactory.delivery.order.domain.Order;
 import com.codefactory.delivery.order.domain.OrderId;
 import com.codefactory.delivery.order.domain.OrderItem;
 import com.codefactory.delivery.order.domain.OrderItemOption;
@@ -30,7 +31,9 @@ public class OrderCreateService {
     public OrderId create(OrderInfoDto orderInfo, List<OrderItemDto> items) {
 
         List<OrderItem> orderItems = toOrderItem(items);
-
+        Order order = Order.builder()
+                .orderItems(orderItems)
+                .build();
         return null;
     }
 
