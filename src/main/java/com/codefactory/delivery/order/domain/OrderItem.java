@@ -1,17 +1,19 @@
 package com.codefactory.delivery.order.domain;
 
 import com.codefactory.delivery.global.infrastructure.persistence.Price;
-import com.codefactory.delivery.menu.domain.ItemId;
 import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
+import com.codefactory.delivery.menu.domain.ItemId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * 선택한 옵션
- *  옵션번호_금액_수량||옵션번호_금액_수량...
+ *  옵션명_금액_수량||옵션명_금액_수량...
  */
 @ToString
 @Getter
@@ -28,6 +30,8 @@ public class OrderItem {
     private Price price;
 
     private int quantity;
+
+    private List<OrderItemOption> options;
 
     @Convert(converter = PriceConverter.class)
     private Price totalPrice;

@@ -11,7 +11,8 @@ import lombok.*;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItemOption {
-    private int idx;
+    private String name;
+
     @Convert(converter = PriceConverter.class)
     private Price price;
     private int quantity;
@@ -19,8 +20,8 @@ public class OrderItemOption {
     private Price totalPrice;
 
     @Builder
-    protected OrderItemOption(int idx, Price price, int quantity) {
-        this.idx = idx;
+    protected OrderItemOption(String name, Price price, int quantity) {
+        this.name = name;
         this.price = price;
         this.quantity = quantity;
         calculateTotalPrice();
