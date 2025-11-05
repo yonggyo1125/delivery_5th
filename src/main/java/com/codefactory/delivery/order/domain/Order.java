@@ -80,7 +80,7 @@ public class Order extends BaseUserEntity {
     public void  orderAccept() {
         this.status = OrderStatus.ORDER_ACCEPT;
 
-        // 결제 요청 이벤트 발생 시키기
+        // 주문 접수 후 이벤트 발생 시키기 - 메일 전송
         Events.trigger(new OrderAcceptEvent(id));
     }
 

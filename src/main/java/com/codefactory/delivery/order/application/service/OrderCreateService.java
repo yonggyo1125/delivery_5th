@@ -37,6 +37,8 @@ public class OrderCreateService {
                 .orderItems(orderItems)
                 .build();
 
+        order.orderAccept(); // 주문 접수 상태 변경
+
         orderRepository.save(order);
 
         return order.getId();
