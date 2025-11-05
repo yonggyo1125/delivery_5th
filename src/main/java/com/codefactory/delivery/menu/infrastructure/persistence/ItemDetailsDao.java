@@ -8,6 +8,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ItemDetailsDao implements ItemDetailsRepository {
@@ -26,5 +28,13 @@ public class ItemDetailsDao implements ItemDetailsRepository {
         return queryFactory.selectFrom(item)
                 .where(item.id.eq(id))
                 .fetchFirst();
+    }
+
+    @Override
+    public List<Item> findAllById(List<ItemId> ids) {
+        QItem item = QItem.item;
+        return queryFactory.selectFrom(item)
+                .where(item.id.in(ids))
+                .fetch();
     }
 }
