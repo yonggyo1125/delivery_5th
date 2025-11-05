@@ -5,5 +5,6 @@ import java.util.UUID;
 
 public record OrderItemDto(
     UUID itemId, // 메뉴 번호
+    int quantity, // 구매 수량
     List<OrderItemOptionDto> options
 ){}
