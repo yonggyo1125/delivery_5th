@@ -1,8 +1,11 @@
 package com.codefactory.delivery.order.infrastructure.persistence.converter;
 
+import com.codefactory.delivery.global.infrastructure.persistence.Price;
 import com.codefactory.delivery.order.domain.OrderItemOption;
 import jakarta.persistence.AttributeConverter;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,14 @@ public class OrderItemOptionConverter implements AttributeConverter<List<OrderIt
 
     @Override
     public List<OrderItemOption> convertToEntityAttribute(String dbData) {
-        return List.of();
+        return StringUtils.hasText(dbData) ? Arrays.stream(dbData.split("\\|\\|"))
+                .map(s -> {
+                    String[] values = s.split("_");
+                    return OrderItemOption.builder()
+                            .name(values[0])
+                            .price(new Price(Integer.parseInt(values[1])))
+                            .quantity(Integer.parseInt(values[2]))
+                            .build();
+                }).toList() : null;
     }
 }
