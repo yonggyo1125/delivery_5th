@@ -9,6 +9,10 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import lombok.*;
 
+/**
+ * 선택한 옵션
+ *  옵션번호_금액_수량||옵션번호_금액_수량...
+ */
 @ToString
 @Getter
 @Embeddable

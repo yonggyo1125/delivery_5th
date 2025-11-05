@@ -18,7 +18,7 @@ public class DeliveryInfo {
     private String memo;
 
     @Builder
-    public DeliveryInfo(String address, String memo) {
+    protected DeliveryInfo(String address, String memo) {
         this.address = address;
         this.memo = memo;
     }

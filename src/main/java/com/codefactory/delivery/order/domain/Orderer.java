@@ -14,12 +14,16 @@ public class Orderer {
     @Column(name="orderer_id")
     private UserId id;
 
-    @Column(name="orderer_name")
+    @Column(length=45, name="orderer_name", nullable = false)
     private String name;
 
+    @Column(length=65, name="orderer_email", nullable = false)
+    private String email;
+
     @Builder
-    public Orderer(UserId id, String name) {
+    protected Orderer(UserId id, String name, String email) {
         this.id = id;
         this.name = name;
+        this.email = email;
     }
 }

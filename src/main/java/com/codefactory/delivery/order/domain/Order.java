@@ -5,6 +5,7 @@ import com.codefactory.delivery.global.infrastructure.persistence.BaseUserEntity
 import com.codefactory.delivery.global.infrastructure.persistence.Price;
 import com.codefactory.delivery.global.infrastructure.persistence.converter.PriceConverter;
 import com.codefactory.delivery.order.domain.event.OrderAcceptEvent;
+import com.codefactory.delivery.order.domain.event.OrderRefundEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,6 +15,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 1. 주문 상품이 1개 이상이어야 주문이 가능
+ * 2. 주문 상품의 총 금액은 주문상품 목록을 통해서만 계산된다.
+ * 3. 주문 취소는 주문 접수 후 5분 이내 가능
+ *      - 입금 확인 전 : 주문 취소 상태(ORDER_CANCEL)
+ *      - 입금 완료 후 : 주문 환불 상태(ORDER_REFUND) / 결제 취소 진행(이벤트 발생)
+ * 4. 배송중 주문 상태는 입금 확인이 되어야만 변경 가능
+ */
 @Getter
 @Entity
 @Table(name="P_ORDER")
@@ -45,9 +54,9 @@ public class Order extends BaseUserEntity {
     private OrderStatus status;
 
     @Builder
-    public Order(Orderer orderer, List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderStatus status) {
+    public Order(Orderer orderer, List<OrderItem> orderItems, String deliveryAddress, String deliveryMemo, OrderStatus status) {
         this.orderer = orderer;
-        this.deliveryInfo = deliveryInfo;
+        this.deliveryInfo = new DeliveryInfo(deliveryAddress, deliveryMemo);
         this.status = status;
         setOrderItems(orderItems);
         calculateTotalOrderPrice();
@@ -81,6 +90,9 @@ public class Order extends BaseUserEntity {
             this.status = OrderStatus.ORDER_CANCEL;
         } else if (createdAt != null && createdAt.isBefore(createdAt.plusMinutes(5L))) {
             this.status = OrderStatus.ORDER_REFUND;
+
+            // 결제 취소 요청
+            Events.trigger(new OrderRefundEvent(id));
         }
     }
 
