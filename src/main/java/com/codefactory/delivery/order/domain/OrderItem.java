@@ -40,8 +40,9 @@ public class OrderItem {
     private Price totalPrice;
 
     @Builder
-    public OrderItem(ItemId itemId, Price price, int quantity, List<OrderItemOption> options) {
+    public OrderItem(ItemId itemId, String itemName, Price price, int quantity, List<OrderItemOption> options) {
         this.itemId = itemId;
+        this.itemName = itemName;
         this.price = price;
         this.quantity = quantity;
         this.options = options;

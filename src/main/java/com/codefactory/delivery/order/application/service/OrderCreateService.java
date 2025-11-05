@@ -10,6 +10,7 @@ import com.codefactory.delivery.order.application.service.dto.OrderItemOptionDto
 import com.codefactory.delivery.order.domain.*;
 import com.codefactory.delivery.user.domain.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class OrderCreateService {
     private final ItemDetailsDao itemDetailsDao;
     private final OrderRepository orderRepository;
 
+    @PreAuthorize("hasRole('USER')")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public OrderId create(OrderInfoDto orderInfo, List<OrderItemDto> items) {
 
@@ -34,6 +36,8 @@ public class OrderCreateService {
                 .ordererId(UserId.of(orderInfo.ordererId()))
                 .ordererName(orderInfo.ordererName())
                 .ordererEmail(orderInfo.ordererEmail())
+                .deliveryAddress(orderInfo.deliveryAddress())
+                .deliveryMemo(orderInfo.deliveryMemo())
                 .orderItems(orderItems)
                 .build();
 
@@ -69,6 +73,7 @@ public class OrderCreateService {
 
                         return OrderItem.builder()
                                 .itemId(i.getId())
+                                .itemName(i.getName())
                                 .price(i.getPrice())
                                 .quantity(dto.quantity())
                                 .options(options)

@@ -5,5 +5,7 @@ import java.util.UUID;
 public record OrderInfoDto(
         UUID ordererId,
         String ordererName,
-        String ordererEmail
+        String ordererEmail,
+        String deliveryAddress,
+        String deliveryMemo
 ) {}

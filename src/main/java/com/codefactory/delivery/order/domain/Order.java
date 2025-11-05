@@ -9,12 +9,10 @@ import com.codefactory.delivery.order.domain.event.OrderRefundEvent;
 import com.codefactory.delivery.order.domain.exception.OrderItemNotExistException;
 import com.codefactory.delivery.user.domain.UserId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 1. 주문 상품이 1개 이상이어야 주문이 가능
@@ -24,6 +22,7 @@ import java.util.List;
  *      - 입금 완료 후 : 주문 환불 상태(ORDER_REFUND) / 결제 취소 진행(이벤트 발생)
  * 4. 배송중 주문 상태는 입금 확인이 되어야만 변경 가능
  */
+@ToString
 @Getter
 @Entity
 @Table(name="P_ORDER")
@@ -55,7 +54,8 @@ public class Order extends BaseUserEntity {
     private OrderStatus status;
 
     @Builder
-    public Order(UserId ordererId, String ordererName, String ordererEmail, List<OrderItem> orderItems, String deliveryAddress, String deliveryMemo, OrderStatus status) {
+    public Order(OrderId id, UserId ordererId, String ordererName, String ordererEmail, List<OrderItem> orderItems, String deliveryAddress, String deliveryMemo, OrderStatus status) {
+        this.id = Objects.requireNonNullElse(id, OrderId.of());
         this.orderer = new Orderer(ordererId, ordererName, ordererEmail);
         this.deliveryInfo = new DeliveryInfo(deliveryAddress, deliveryMemo);
         this.status = status;
